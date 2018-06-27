@@ -2,7 +2,7 @@
 
 from functools import wraps
 
-from mobi.middleware import MobileDetectionMiddleware
+from mobi2.middleware import MobileDetectionMiddleware
 
 
 def detect_mobile(view):
@@ -14,6 +14,5 @@ def detect_mobile(view):
     def detected(request, *args, **kwargs):
         MobileDetectionMiddleware.process_request(request)
         return view(request, *args, **kwargs)
-    detected.__doc__ = "%s\n[Wrapped by detect_mobile which detects if the " \
-        "request is from a phone]" % view.__doc__
+    detected.__doc__ = '%s\n[Wrapped by detect_mobile which detects if the request is from a phone]' % view.__doc__
     return detected

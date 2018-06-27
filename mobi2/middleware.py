@@ -3,7 +3,7 @@
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django_six import MiddlewareMixin
-from mobi.useragents import load_tablet_strings, search_strings
+from mobi2.useragents import load_tablet_strings, search_strings
 
 
 MOBI_USER_AGENT_IGNORE_LIST = getattr(settings, 'MOBI_USER_AGENT_IGNORE_LIST', list())
