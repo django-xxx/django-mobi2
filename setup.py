@@ -15,10 +15,10 @@ setup(
     author='Hackathon',
     author_email='kimi.huang@brightcells.com',
 
-    packages=['mobi'],
+    packages=['mobi2'],
     py_modules=[],
     package_data={
-        'mobi': ['*.txt']
+        'mobi2': ['*.txt']
     },
     install_requires=['django-six'],
 
