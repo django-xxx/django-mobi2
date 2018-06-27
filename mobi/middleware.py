@@ -1,11 +1,12 @@
+# -*- coding: utf-8 -*-
+
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django_six import MiddlewareMixin
-from mobi.useragents import search_strings, load_tablet_strings
+from mobi.useragents import load_tablet_strings, search_strings
 
-MOBI_USER_AGENT_IGNORE_LIST = getattr(settings,
-                                      'MOBI_USER_AGENT_IGNORE_LIST', list())
 
+MOBI_USER_AGENT_IGNORE_LIST = getattr(settings, 'MOBI_USER_AGENT_IGNORE_LIST', list())
 MOBI_DETECT_TABLET = getattr(settings, 'MOBI_DETECT_TABLET', False)
 
 
@@ -27,26 +28,26 @@ class MobileDetectionMiddleware(MiddlewareMixin):
            depending on whether the request should be considered to come from a
            small-screen device such as a phone or a PDA"""
 
-        if "HTTP_X_OPERAMINI_FEATURES" in request.META:
-            #Then it's running opera mini. 'Nuff said.
-            #Reference from:
+        if 'HTTP_X_OPERAMINI_FEATURES' in request.META:
+            # Then it's running opera mini. 'Nuff said.
+            # Reference from:
             # http://dev.opera.com/articles/view/opera-mini-request-headers/
             request.mobile = True
             return None
 
-        if "HTTP_ACCEPT" in request.META:
-            s = request.META["HTTP_ACCEPT"].lower()
+        if 'HTTP_ACCEPT' in request.META:
+            s = request.META['HTTP_ACCEPT'].lower()
             if 'application/vnd.wap.xhtml+xml' in s:
                 # Then it's a wap browser
                 request.mobile = True
                 return None
 
-        if "HTTP_USER_AGENT" in request.META:
+        if 'HTTP_USER_AGENT' in request.META:
             # This takes the most processing. Surprisingly enough, when I
             # Experimented on my own machine, this was the most efficient
             # algorithm. Certainly more so than regexes.
             # Also, Caching didn't help much, with real-world caches.
-            s = request.META["HTTP_USER_AGENT"].lower()
+            s = request.META['HTTP_USER_AGENT'].lower()
             for ua in search_strings:
                 if ua in s:
                     # check if we are ignoring this user agent: (IPad)
@@ -57,7 +58,7 @@ class MobileDetectionMiddleware(MiddlewareMixin):
                             request.tablet = _is_tablet(s)
                         return None
 
-        #Otherwise it's not a mobile
+        # Otherwise it's not a mobile
         request.mobile = False
         request.tablet = False
         return None
@@ -68,7 +69,7 @@ def _is_tablet(s):
     tablet_strings = load_tablet_strings()
     for ta in tablet_strings:
         if ta == '__android__not_mobile__':
-            if 'android' in s and not 'mobile' in s:
+            if 'android' in s and 'mobile' not in s:
                 is_tablet = True
                 break
 
@@ -98,7 +99,7 @@ class MobileRedirectMiddleware(MiddlewareMixin):
         if x_wap or http_profile:
             do_redirect = True
 
-        #look at the user agent if they don't have x_wap and http_profile
+        # look at the user agent if they don't have x_wap and http_profile
         if user_agent and not do_redirect:
             user_agent = user_agent.lower()
             is_mobile = [w for w in search_strings if w in user_agent]
@@ -106,10 +107,10 @@ class MobileRedirectMiddleware(MiddlewareMixin):
                 do_redirect = True
 
         if do_redirect and self.MOBI_REDIRECT_URL:
-             # tell adaptation services (transcoders and proxies) to not
-             # alter the content based on user agent as it's already being
-             # managed by this script
-             # http://mobiforge.com/developing/story/setting-http-headers-advise-transcoding-proxies
+            # tell adaptation services (transcoders and proxies) to not
+            # alter the content based on user agent as it's already being
+            # managed by this script
+            # http://mobiforge.com/developing/story/setting-http-headers-advise-transcoding-proxies
             response = HttpResponseRedirect(self.MOBI_REDIRECT_URL)
             response['Cache-Control'] = 'no-transform'
             response['Vary'] = 'User-Agent, Accept'

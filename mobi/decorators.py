@@ -1,6 +1,8 @@
-from mobi.middleware import MobileDetectionMiddleware
+# -*- coding: utf-8 -*-
 
 from functools import wraps
+
+from mobi.middleware import MobileDetectionMiddleware
 
 
 def detect_mobile(view):

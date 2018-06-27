@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os.path
 
 from django.core.cache import cache
@@ -21,10 +23,8 @@ def load_strings_from_file(cache_key, file_name):
     return agents
 
 
-search_strings = load_strings_from_file('MOBI_USER_AGENT',
-                                        'search_strings.txt')
+search_strings = load_strings_from_file('MOBI_USER_AGENT', 'search_strings.txt')
 
 
 def load_tablet_strings():
-    return load_strings_from_file('MOBI_TABLE_USER_AGENT',
-                                  'tablet_strings.txt')
+    return load_strings_from_file('MOBI_TABLE_USER_AGENT', 'tablet_strings.txt')
