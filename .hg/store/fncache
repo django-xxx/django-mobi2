@@ -1,0 +1,13 @@
+data/setup.py.i
+data/mobi/tablet_strings.txt.i
+data/mobi/models.py.i
+data/mobi/decorators.py.i
+data/CONTRIBUTORS.txt.i
+data/mobi/useragents.py.i
+data/README.i
+data/.hgignore.i
+data/mobi/middleware.py.i
+data/MANIFEST.in.i
+data/LICENSE.i
+data/mobi/search_strings.txt.i
+data/mobi/__init__.py.i
